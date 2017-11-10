@@ -1,0 +1,5 @@
+elm-stuff/
+__pycache__
+env/
+db.sqlite3
+front/static/js/main.js
