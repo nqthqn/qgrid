@@ -1,10 +1,15 @@
 module Main exposing (..)
 
+import App.Model exposing (initModel)
+import App.Update exposing (update)
 import App.View exposing (view)
-import App.Model exposing (Model)
-import App.Update exposing (update, Msg(..))
+import Html exposing (program)
 
 
-main : Html msg
 main =
-    view 1
+    program
+        { update = update
+        , view = view
+        , init = ( initModel, Cmd.none )
+        , subscriptions = always Sub.none
+        }
