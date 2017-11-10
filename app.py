@@ -21,10 +21,15 @@ settings = {
     }
 }
 
+commands = [
+    Command('fixtures', fixtures)
+]
+# TODO,  combine them?
+
 app = App(
         routes=routes,
         settings=settings,
-        commands=sqlalchemy_backend.commands.append(Command('fixtures', fixtures)),
+        commands= commands + sqlalchemy_backend.commands,
         components=sqlalchemy_backend.components
     )
 
