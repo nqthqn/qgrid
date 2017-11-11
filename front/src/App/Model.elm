@@ -2,10 +2,21 @@ module App.Model exposing (..)
 
 
 type Msg
-    = Edit
-    | Set String
-    | Save
-    | Cancel
+    = Edit GridPart
+    | Set GridPart String
+    | Save GridPart
+    | Cancel GridPart
+    | SetNewRow String
+    | SetNewCol String
+    | ToggleNewRow
+    | ToggleNewCol
+    | SaveRow Row
+    | SaveCol Col
+
+
+type GridPart
+    = Rows Int
+    | Cols Int
 
 
 type alias Model =
@@ -41,14 +52,14 @@ type alias Options =
 
 type alias Row =
     { id : Int
-    , name : String
+    , name : Editable
     , sort : Int
     }
 
 
 type alias Col =
     { id : Int
-    , name : String
+    , name : Editable
     , sort : Int
     , options : Maybe Options
     }
@@ -56,10 +67,12 @@ type alias Col =
 
 type alias Matrix =
     { id : Maybe Int
-    , name : String
+    , name : Editable
     , rows : List Row
     , cols : List Col
     , active : Bool
+    , newRow : Maybe String
+    , newCol : Maybe String
     }
 
 
@@ -67,18 +80,55 @@ type alias Matrix =
 -- init
 
 
+cols =
+    [ { id = 23
+      , name = editableText "Skill Level"
+      , sort = 1
+      , options = Nothing
+      }
+    , { id = 232
+      , name = editableText "Height"
+      , sort = 2
+      , options = Nothing
+      }
+    ]
+
+
+rows =
+    [ { id = 1
+      , name = editableText "Nate"
+      , sort = 1
+      }
+    , { id = 2
+      , name = editableText "Bob"
+      , sort = 2
+      }
+    , { id = 3
+      , name = editableText "Suzy"
+      , sort = 3
+      }
+    ]
+
+
 initMatrix =
-    { id = Nothing
-    , name = ""
-    , rows = []
-    , cols = []
+    { id = Just 123
+    , name = editableText "Test"
+    , rows = rows
+    , cols = cols
     , active = False
+    , newRow = Nothing
+    , newCol = Nothing
     }
 
 
 initEditable =
-    { prev = "Edit me"
-    , curr = "Edit me"
+    editableText "Edit me"
+
+
+editableText : String -> Editable
+editableText string =
+    { prev = string
+    , curr = string
     , editing = False
     }
 
