@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import App.Model exposing (..)
+import App.Util as Util
 
 
 view model =
@@ -118,20 +119,40 @@ qgrid3 matrix =
         ([ qgridCols matrix.cols
          ]
             ++ (qgridRows (List.length matrix.cols) matrix.rows)
+            ++ [ tr []
+                    [ td [ class "addGridPart" ]
+                        [ a
+                            [ onClick (ModifyMatrix (Util.addRow initRow))
+                            , class "f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-black"
+                            , href "#"
+                            ]
+                            [ text "+" ]
+                        ]
+                    ]
+               ]
         )
 
 
 qgridCols cols =
     tr [] <|
         [ td [] [ text "" ] ]
-            ++ (List.map (\col -> td [] [ a [ href "#" ] [ editableText (Cols col.id) col.name ] ]) cols)
+            ++ (List.map (\col -> td [] [ editableText (Cols col.id) col.name ]) cols)
+            ++ [ td [ class "addGridPart" ]
+                    [ a
+                        [ onClick (ModifyMatrix (Util.addCol initCol))
+                        , class "f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-black"
+                        , href "#"
+                        ]
+                        [ text "+" ]
+                    ]
+               ]
 
 
 qgridRows len rows =
     List.map
         (\row ->
             tr []
-                ([ td [] [ a [ href "#" ] [ editableText (Rows row.id) row.name ] ]
+                ([ td [] [ editableText (Rows row.id) row.name ]
                  ]
                     ++ (List.repeat len (td [] [ text "" ]))
                 )
@@ -143,7 +164,10 @@ editableText : GridPart -> Editable -> Html Msg
 editableText gp e =
     if e.editing then
         div []
-            [ input [ type_ "text", value e.curr, onInput (Set gp) ] []
+            [ small [] [ text e.status ]
+            , br [] []
+            , input [ type_ "text", value e.curr, onInput (Set gp) ] []
+            , br [] []
             , button [ onClick (Save gp) ] [ text "save" ]
             , button [ onClick (Cancel gp) ] [ text "cancel" ]
             ]

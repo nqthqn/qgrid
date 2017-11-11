@@ -6,12 +6,7 @@ type Msg
     | Set GridPart String
     | Save GridPart
     | Cancel GridPart
-    | SetNewRow String
-    | SetNewCol String
-    | ToggleNewRow
-    | ToggleNewCol
-    | SaveRow Row
-    | SaveCol Col
+    | ModifyMatrix (Matrix -> Matrix)
 
 
 type GridPart
@@ -31,6 +26,7 @@ type alias Editable =
     { prev : String
     , curr : String
     , editing : Bool
+    , status : String
     }
 
 
@@ -78,6 +74,31 @@ type alias Matrix =
 
 
 -- init
+
+
+initCol id =
+    { id = id
+    , name =
+        { prev = ""
+        , curr = ""
+        , editing = True
+        , status = ""
+        }
+    , sort = 1
+    , options = Nothing
+    }
+
+
+initRow id =
+    { id = id
+    , name =
+        { prev = ""
+        , curr = ""
+        , editing = True
+        , status = ""
+        }
+    , sort = 1
+    }
 
 
 cols =
@@ -130,6 +151,7 @@ editableText string =
     { prev = string
     , curr = string
     , editing = False
+    , status = ""
     }
 
 
