@@ -23,5 +23,5 @@ uvicorn==0.0.15
 uvitools==0.0.4
 uvloop==0.8.1
 websockets==4.0.1
-Werkzeug==0.12.2
+Werkzeug==0.15.3
 whitenoise==3.3.1
